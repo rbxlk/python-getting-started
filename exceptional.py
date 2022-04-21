@@ -25,4 +25,4 @@ def convert(s):
     except (KeyError, TypeError) as e:
         print(f"Conversion error: {e!r}",
             file=sys.stderr)
-        return -1
+        raise
