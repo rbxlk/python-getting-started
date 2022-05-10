@@ -14,6 +14,8 @@ class Flight:
         
         self._number = number
         self._aircraft = aircraft
+        rows, seats = self._aircraft.seating_plan()
+        self._seating = [None] + [{letter: None for letter in seats} for _ in rows]
 
     def number(self):
         return self._number
