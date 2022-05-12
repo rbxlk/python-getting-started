@@ -1,8 +1,5 @@
 """Model for aircraft flights."""
 
-from multiprocessing.sharedctypes import Value
-
-
 class Flight:
     """A flight with a particular passenger aircraft"""
     def __init__(self, number, aircraft):
@@ -39,9 +36,15 @@ class Flight:
             Raises:
                 ValueError: If the seat is unavailable
         """
+        row, letter = self._parse_seat(seat)
+        
+        if self._seating[row][letter] is not None:
+            raise ValueError(f"Seat {seat} already occupied")
 
+        self._seating[row][letter] = passenger
+
+    def _parse_seat(self, seat):
         rows, seat_letters = self._aircraft.seating_plan()
-
         letter = seat[-1]
         if letter not in seat_letters:
             raise ValueError(f"Invalid seat letter {letter}")
@@ -54,11 +57,8 @@ class Flight:
         
         if row not in rows:
             raise ValueError(f"Invalid row number {row}")
-
-        if self._seating[row][letter] is not None:
-            raise ValueError(f"Seat {seat} already occupied")
-
-        self._seating[row][letter] = passenger
+        
+        return row, letter
 
 class Aircraft:
 
